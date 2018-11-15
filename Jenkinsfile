@@ -18,5 +18,22 @@ stages{
 		build job: 'deploy_to_staging'
 	    }
 	}
+
+	stage('Deploy to Prod'){
+		steps {	
+		   timeout(time:5,units:'Days'){
+			input message: "Approve production deployment?"
+		    }
+		    build job: 'deploy_to_prod'
+		}
+		post {
+			success {
+				echo 'Code deployed to Prod'
+			}
+			failure {
+				echo 'Deployment failed'
+			}
+		 }
+	}
     }
 }
